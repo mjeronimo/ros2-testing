@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Check -help
 ros2 daemon stop
+
+# Check -help
 ros2 --help
 ros2 action --help
 ros2 bag --help
@@ -23,7 +24,7 @@ ros2 topic --help
 ros2 trace --help
 ros2 wtf --help
 
-# Check completion
+# Check TAB completion
 # TODO
 
 # ros2 action: info, list, send_goal
@@ -104,7 +105,9 @@ done
 #ros2 launch demo_nodes_cpp add_two_ints_async.launch.py
 #Issue: ros2 launch demo_nodes_cpp add_two_ints_async.launch.xml
 
-# ros2 multicast: received, sedn
+# ros2 multicast: received, send
+ros2 multicast receive &
+ros2 multicast send
 
 # ros2 node: info, list
 
@@ -126,14 +129,24 @@ cat ros2-cli-testing.tmp/CMakeLists.txt
 rm -r ros2-cli-testing.tmp
 
 # ros2 run: --prefix
+ros2 run --prefix "timeout 10" demo_nodes_cpp talker
 
-# rus2 security: linux_demo, macos_demo, windows_demo
+# ros2 security: linux_demo, macos_demo, windows_demo
+# TODO
 
 # ros2 service: call, find, list, type
+ros2 run demo_nodes_cpp add_two_ints_server &
+ros2 service list
+ros2 service find add_two_ints
+ros2 service type /add_two_ints
+ros2 run demo_nodes_cpp add_two_ints_client
+ros2 service call /add_two_ints example_interfaces/srv/AddTwoInts "{a: 1, b: 2}"
+pkill -f add_two_ints
+ros2 daemon stop
 
 # ros2 test
+ros2 test /opt/ros/$ROS_DISTRO/share/launch_testing_ros/examples/talker_listener_launch_test.py
 
 # ros2 topic: bw, delay, echo, find, hz, info, list, pub, type
 
 # ros2 trace
-
